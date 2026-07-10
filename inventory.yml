@@ -1,0 +1,6 @@
+all:
+  hosts:
+    main-vps:
+      ansible_host: 135.106.137.157
+      ansible_user: deploy
+      ansible_port: 22

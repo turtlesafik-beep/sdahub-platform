@@ -1,0 +1,137 @@
+---
+- name: Полная настройка основного VPS
+  hosts: main-vps
+  become: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+    # ========== 1. Базовые пакеты и обновления ==========
+    - name: Обновить список пакетов
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Установить базовые пакеты
+      apt:
+        name:
+          - git
+          - curl
+          - wget
+          - ufw
+          - fail2ban
+          - nginx
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    # ========== 2. Безопасность: UFW + Fail2ban ==========
+    - name: Разрешить порты
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - 22
+        - 80
+        - 443
+
+    - name: Включить UFW
+      ufw:
+        state: enabled
+
+    - name: Запустить и включить Fail2ban
+      systemd:
+        name: fail2ban
+        state: started
+        enabled: yes
+
+    # ========== 3. Docker ==========
+    - name: Установить Docker и Compose
+      apt:
+        name:
+          - docker.io
+          - docker-compose-plugin
+        state: present
+
+    - name: Добавить deploy в группу docker
+      user:
+        name: deploy
+        groups: docker
+        append: yes
+
+    # ========== 4. Стек мониторинга (Docker Compose) ==========
+    - name: Создать папку для мониторинга
+      file:
+        path: /home/deploy/monitoring
+        state: directory
+        mode: '0755'
+
+    - name: Создать папку для конфига Alloy
+      file:
+        path: /home/deploy/monitoring/alloy-config
+        state: directory
+        mode: '0755'
+
+    - name: Скопировать конфиг Alloy
+      copy:
+        src: files/config.alloy
+        dest: /home/deploy/monitoring/alloy-config/config.alloy
+        mode: '0644'
+
+    - name: Создать docker-compose.yml для мониторинга
+      template:
+        src: templates/docker-compose.monitoring.yml.j2
+        dest: /home/deploy/monitoring/docker-compose.yml
+
+    - name: Запустить мониторинг
+      docker_compose:
+        project_src: /home/deploy/monitoring
+        state: present
+        pull: yes
+
+    # ========== 5. Nginx ==========
+    - name: Настроить Nginx (Grafana)
+      template:
+        src: templates/nginx-grafana.conf.j2
+        dest: /etc/nginx/sites-available/grafana.conf
+
+    - name: Включить сайт Grafana
+      file:
+        src: /etc/nginx/sites-available/grafana.conf
+        dest: /etc/nginx/sites-enabled/grafana.conf
+        state: link
+
+    - name: Настроить Nginx (Portainer)
+      template:
+        src: templates/nginx-portainer.conf.j2
+        dest: /etc/nginx/sites-available/portainer.conf
+
+    - name: Включить сайт Portainer
+      file:
+        src: /etc/nginx/sites-available/portainer.conf
+        dest: /etc/nginx/sites-enabled/portainer.conf
+        state: link
+
+    - name: Удалить дефолтный конфиг Nginx
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: reload nginx
+
+    # ========== 6. SSL-сертификаты ==========
+    - name: Получить SSL-сертификаты
+      command: >
+        certbot --nginx -d {{ grafana_subdomain }}.{{ domain }}
+        -d {{ portainer_subdomain }}.{{ domain }}
+        --non-interactive --agree-tos --email {{ admin_email }}
+        --redirect
+      args:
+        creates: "/etc/letsencrypt/live/{{ domain }}/fullchain.pem"
+      notify: reload nginx
+
+  handlers:
+    - name: reload nginx
+      systemd:
+        name: nginx
+        state: reloaded
