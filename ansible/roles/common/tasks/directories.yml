@@ -2,13 +2,13 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    owner: deploy
-    group: deploy
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
     mode: "0755"
   loop:
-    - /opt/sdahub
-    - /opt/sdahub/compose
-    - /opt/sdahub/configs
-    - /opt/sdahub/data
-    - /opt/sdahub/backups
-    - /opt/sdahub/scripts
+  - "{{ sdahub_root }}"
+  - "{{ sdahub_root }}/compose"
+  - "{{ sdahub_root }}/configs"
+  - "{{ sdahub_root }}/data"
+  - "{{ sdahub_root }}/backups"
+  - "{{ sdahub_root }}/scripts"
