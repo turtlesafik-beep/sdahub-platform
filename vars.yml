@@ -1,5 +1,0 @@
----
-domain: "sdahub.ru"
-grafana_subdomain: "grafana"
-portainer_subdomain: "portainer"
-admin_email: "admin@sdahub.ru"
