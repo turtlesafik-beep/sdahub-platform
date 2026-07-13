@@ -1,0 +1,14 @@
+- name: Create sdahub directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: deploy
+    group: deploy
+    mode: "0755"
+  loop:
+    - /opt/sdahub
+    - /opt/sdahub/compose
+    - /opt/sdahub/configs
+    - /opt/sdahub/data
+    - /opt/sdahub/backups
+    - /opt/sdahub/scripts

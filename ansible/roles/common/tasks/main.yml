@@ -3,13 +3,6 @@
   ansible.builtin.apt:
     update_cache: true
 
-- name: Install base packages
-  ansible.builtin.apt:
-    name:
-      - curl
-      - git
-      - vim
-      - htop
-      - unzip
-      - ca-certificates
-    state: present
+- import_tasks: packages.yml
+
+- import_tasks: directories.yml
