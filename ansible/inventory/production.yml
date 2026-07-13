@@ -1,5 +1,5 @@
 all:
   hosts:
     natalia:
-      ansible_host: YOUR_SERVER_IP
+      ansible_host: 135.106.137.157
       ansible_user: deploy
