@@ -2,3 +2,11 @@
 deploy_user: deploy
 
 sdahub_root: /opt/sdahub
+
+compose_dir: "{{ sdahub_root }}/compose"
+config_dir: "{{ sdahub_root }}/configs"
+data_dir: "{{ sdahub_root }}/data"
+backup_dir: "{{ sdahub_root }}/backups"
+scripts_dir: "{{ sdahub_root }}/scripts"
+
+portainer_port: 9443

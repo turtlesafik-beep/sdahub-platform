@@ -1,0 +1,21 @@
+---
+- name: Create Portainer directory
+  ansible.builtin.file:
+    path: "{{ compose_dir }}/portainer"
+    state: directory
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0755"
+
+- name: Copy Portainer compose file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_dir }}/portainer/docker-compose.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Start Portainer
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir }}/portainer"
+    state: present
