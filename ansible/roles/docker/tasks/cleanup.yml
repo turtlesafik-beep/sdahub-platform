@@ -1,0 +1,11 @@
+---
+- name: Remove conflicting docker packages
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-compose
+      - docker-compose-v2
+      - containerd
+      - runc
+    state: absent
+    purge: true
