@@ -6,3 +6,14 @@
 - import_tasks: packages.yml
 
 - import_tasks: directories.yml
+
+- name: Set custom MOTD
+  ansible.builtin.copy:
+    dest: /etc/motd
+    content: |
+      Welcome to SDAHub Platform
+      Managed by Ansible
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload motd
