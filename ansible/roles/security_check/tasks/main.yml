@@ -1,0 +1,66 @@
+---
+- name: Check root SSH login disabled
+  ansible.builtin.command:
+
+    cmd: sshd -T
+
+  register: ssh_config
+  changed_when: false
+
+
+- name: Verify PermitRootLogin
+  ansible.builtin.assert:
+
+    that:
+      - "'permitrootlogin no' in ssh_config.stdout"
+
+    fail_msg: "Root SSH login is enabled"
+
+
+- name: Verify password authentication disabled
+  ansible.builtin.assert:
+
+    that:
+      - "'passwordauthentication no' in ssh_config.stdout"
+
+    fail_msg: "Password SSH login is enabled"
+
+
+- name: Check UFW status
+  ansible.builtin.command:
+
+    cmd: ufw status
+
+  register: ufw_status
+  changed_when: false
+
+
+- name: Verify firewall enabled
+  ansible.builtin.assert:
+
+    that:
+      - "'Status: active' in ufw_status.stdout"
+
+    fail_msg: "Firewall is not active"
+
+
+- name: Check fail2ban
+  ansible.builtin.service_facts:
+
+
+- name: Verify fail2ban running
+  ansible.builtin.assert:
+
+    that:
+      - ansible_facts.services['fail2ban.service'].state == 'running'
+
+    fail_msg: "Fail2ban is not running"
+
+
+- name: Check docker
+  ansible.builtin.assert:
+
+    that:
+      - ansible_facts.services['docker.service'].state == 'running'
+
+    fail_msg: "Docker is not running"

@@ -1,0 +1,7 @@
+---
+- name: Security baseline check
+  hosts: all
+  become: true
+
+  roles:
+    - security_check

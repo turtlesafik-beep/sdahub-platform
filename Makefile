@@ -11,6 +11,7 @@ help:
 	@echo "  make bootstrap    - Create deploy user"
 	@echo "  make configure    - Configure existing server"
 	@echo "  make check        - Ansible dry run"
+	@echo "  make security-check - Validate server security baseline"
 	@echo "  make reset-host   - Remove old SSH fingerprint"
 	@echo ""
 
@@ -50,3 +51,8 @@ check:
 
 reset-host:
 	ssh-keygen -R 135.106.137.157
+
+security-check:
+	ansible-playbook \
+	-i ansible/inventory/production.yml \
+	ansible/playbooks/security-check.yml
