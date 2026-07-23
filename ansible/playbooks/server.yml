@@ -1,18 +1,10 @@
 ---
-- name: Bootstrap access
-  hosts: all
-  become: true
-
-  roles:
-    - users
-
-
 - name: Configure server
   hosts: all
   become: true
-  remote_user: deploy
 
   roles:
+    - ssh_hardening
     - common
     - docker
     - nginx

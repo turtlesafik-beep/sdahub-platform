@@ -1,0 +1,7 @@
+---
+- name: Bootstrap access
+  hosts: all
+  become: true
+
+  roles:
+    - users

@@ -1,0 +1,7 @@
+---
+- name: Bootstrap new server access
+  import_playbook: bootstrap-user.yml
+
+
+- name: Configure server
+  import_playbook: server.yml
