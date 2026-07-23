@@ -4,7 +4,6 @@
     path: /etc/ssh/sshd_config
     regexp: '^#?PermitRootLogin'
     line: 'PermitRootLogin no'
-    state: present
 
 
 - name: Disable password authentication
@@ -12,10 +11,37 @@
     path: /etc/ssh/sshd_config
     regexp: '^#?PasswordAuthentication'
     line: 'PasswordAuthentication no'
-    state: present
 
 
-- name: Restart SSH service
+- name: Disable empty passwords
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitEmptyPasswords'
+    line: 'PermitEmptyPasswords no'
+
+
+- name: Limit SSH users
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?AllowUsers'
+    line: "AllowUsers {{ deploy_user }}"
+
+
+- name: Disable SSH root environment
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitUserEnvironment'
+    line: 'PermitUserEnvironment no'
+
+
+- name: Set max SSH auth attempts
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?MaxAuthTries'
+    line: 'MaxAuthTries 3'
+
+
+- name: Restart SSH
   ansible.builtin.service:
     name: ssh
     state: restarted
