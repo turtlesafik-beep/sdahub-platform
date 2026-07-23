@@ -12,7 +12,7 @@
 - name: Add SSH public key for deploy
   ansible.posix.authorized_key:
     user: "{{ deploy_user }}"
-    key: "{{ lookup('file', ssh_public_key) }}"
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
 
 
 - name: Configure passwordless sudo for deploy

@@ -1,7 +1,7 @@
 ---
 deploy_user: deploy
 
-ssh_public_key: "~/.ssh/id_ed25519.pub"
+ssh_public_key: "{{ lookup('env','HOME') }}/.ssh/id_rsa.pub"
 
 sdahub_root: /opt/sdahub
 compose_dir: "{{ sdahub_root }}/compose"
