@@ -1,0 +1,19 @@
+PermitRootLogin no
+
+PasswordAuthentication no
+PermitEmptyPasswords no
+
+AllowUsers {{ deploy_user }}
+
+PermitUserEnvironment no
+
+MaxAuthTries 3
+
+X11Forwarding no
+AllowAgentForwarding no
+AllowTcpForwarding no
+
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+LoginGraceTime 30

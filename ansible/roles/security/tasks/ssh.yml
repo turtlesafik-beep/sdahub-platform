@@ -1,0 +1,26 @@
+---
+- name: Remove cloud-init ssh override
+  ansible.builtin.file:
+    path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+    state: absent
+
+
+- name: Configure SSH hardening
+  ansible.builtin.template:
+    src: 99-sdahub-hardening.conf.j2
+    dest: /etc/ssh/sshd_config.d/99-sdahub-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+
+- name: Validate SSH configuration
+  ansible.builtin.command:
+    sshd -t
+  changed_when: false
+
+
+- name: Restart SSH
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
