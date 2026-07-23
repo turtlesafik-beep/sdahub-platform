@@ -1,0 +1,5 @@
+---
+- name: Check fail2ban status
+  ansible.builtin.command:
+    fail2ban-client status sshd
+  changed_when: false
