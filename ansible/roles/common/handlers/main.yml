@@ -1,4 +1,0 @@
----
-- name: Reload motd
-  ansible.builtin.debug:
-    msg: "MOTD file has changed"

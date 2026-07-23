@@ -3,3 +3,4 @@ all:
     natalia:
       ansible_host: 135.106.137.157
       ansible_user: deploy
+      ansible_python_interpreter: /usr/bin/python3

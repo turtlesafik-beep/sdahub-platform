@@ -7,3 +7,4 @@ data_dir: "{{ sdahub_root }}/data"
 backup_dir: "{{ sdahub_root }}/backups"
 scripts_dir: "{{ sdahub_root }}/scripts"
 portainer_port: 9443
+portainer_version: "2.27.9"

@@ -1,4 +1,9 @@
 ---
+- name: Verify docker installation
+  ansible.builtin.command:
+    cmd: docker --version
+    changed_when: false
+
 - name: Create Portainer directory
   ansible.builtin.file:
     path: "{{ compose_dir }}/portainer"
