@@ -1,3 +1,4 @@
 ---
 - import_tasks: firewall.yml
 - import_tasks: ssh.yml
+- import_tasks: fail2ban.yml
