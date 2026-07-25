@@ -1,19 +1,4 @@
 ---
-- name: Create directory for node_exporter compose
-  ansible.builtin.file:
-    path: "{{ compose_dir }}/node_exporter"
-    state: directory
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_user }}"
-    mode: "0755"
-
-- name: Create monitoring network (if not exists)
-  community.docker.docker_network:
-    name: monitoring
-    driver: bridge
-    state: present
-  become: yes
-
 - name: Deploy docker-compose for node_exporter
   ansible.builtin.template:
     src: docker-compose.yml.j2
