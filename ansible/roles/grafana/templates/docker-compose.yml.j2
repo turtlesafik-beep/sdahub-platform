@@ -4,8 +4,8 @@ services:
     container_name: grafana
     restart: unless-stopped
 
-    expose:
-      - "3000"
+    ports:
+      - "127.0.0.1:3000:3000"
 
     environment:
       - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
