@@ -1,17 +1,18 @@
-services:
-  portainer:
-    image: portainer/portainer-ce:{{ portainer_version }}
-    container_name: portainer
-    restart: unless-stopped
+---
+- name: Verify docker installation
+  ansible.builtin.command:
+    cmd: docker --version
+  changed_when: false
 
-    ports:
-      - "{{ portainer_port }}:9443"
+- name: Copy Portainer compose file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_dir }}/portainer/docker-compose.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
 
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - "{{ data_dir }}/portainer:/data"
-
-networks:
-  default:
-    name: monitoring
-    external: true
+- name: Start Portainer
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir }}/portainer"
+    state: present
