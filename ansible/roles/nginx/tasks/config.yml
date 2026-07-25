@@ -1,0 +1,36 @@
+---
+- name: Deploy Grafana nginx config
+  template:
+    src: grafana.conf.j2
+    dest: /etc/nginx/sites-available/grafana
+
+- name: Enable Grafana site
+  file:
+    src: /etc/nginx/sites-available/grafana
+    dest: /etc/nginx/sites-enabled/grafana
+    state: link
+
+- name: Deploy Portainer nginx config
+  template:
+    src: portainer.conf.j2
+    dest: /etc/nginx/sites-available/portainer
+
+- name: Enable Portainer site
+  file:
+    src: /etc/nginx/sites-available/portainer
+    dest: /etc/nginx/sites-enabled/portainer
+    state: link
+
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Validate nginx config
+  command: nginx -t
+  changed_when: false
+
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
