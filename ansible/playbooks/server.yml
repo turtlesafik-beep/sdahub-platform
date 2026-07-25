@@ -20,3 +20,4 @@
 
   - nginx
   - certbot
+  - nginx_ssl

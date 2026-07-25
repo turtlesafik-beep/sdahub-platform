@@ -1,0 +1,21 @@
+- name: Deploy Grafana SSL config
+  template:
+    src: grafana_ssl.conf.j2
+    dest: /etc/nginx/sites-available/grafana
+
+
+- name: Deploy Portainer SSL config
+  template:
+    src: portainer_ssl.conf.j2
+    dest: /etc/nginx/sites-available/portainer
+
+
+- name: Validate nginx
+  command:
+    nginx -t
+
+
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded

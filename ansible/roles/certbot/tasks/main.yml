@@ -1,16 +1,40 @@
----
 - name: Install Certbot
   ansible.builtin.apt:
     name:
       - certbot
-      - python3-certbot-nginx
     state: present
 
+
+- name: Create certbot webroot
+  ansible.builtin.file:
+    path: "{{ certbot_webroot }}"
+    state: directory
+    mode: "0755"
+
+
 - name: Generate Grafana certificate
-  command:
-    certbot --nginx
-    -d {{ grafana_subdomain }}
-    -d {{ portainer_subdomain }}
-    --email {{ certbot_email }}
-    --agree-tos
-    --non-interactive
+  ansible.builtin.command:
+    cmd: >
+      certbot certonly
+      --webroot
+      -w {{ certbot_webroot }}
+      -d {{ grafana_subdomain }}
+      --email {{ certbot_email }}
+      --agree-tos
+      --non-interactive
+  args:
+    creates: "/etc/letsencrypt/live/{{ grafana_subdomain }}/fullchain.pem"
+
+
+- name: Generate Portainer certificate
+  ansible.builtin.command:
+    cmd: >
+      certbot certonly
+      --webroot
+      -w {{ certbot_webroot }}
+      -d {{ portainer_subdomain }}
+      --email {{ certbot_email }}
+      --agree-tos
+      --non-interactive
+  args:
+    creates: "/etc/letsencrypt/live/{{ portainer_subdomain }}/fullchain.pem"

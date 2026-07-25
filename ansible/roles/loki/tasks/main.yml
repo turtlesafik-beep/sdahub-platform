@@ -12,8 +12,8 @@
   ansible.builtin.template:
     src: loki-config.yml.j2
     dest: "{{ config_dir }}/loki/loki-config.yml"
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_user }}"
+    owner: "{{ loki_uid }}"
+    group: "{{ loki_gid }}"
     mode: "0640"
 
 - name: Deploy docker-compose for Loki

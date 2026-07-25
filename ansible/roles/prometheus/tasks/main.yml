@@ -12,8 +12,8 @@
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: "{{ config_dir }}/prometheus/prometheus.yml"
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_user }}"
+    owner: "{{ prometheus_uid }}"
+    group: "{{ prometheus_gid }}"
     mode: "0640"
 
 - name: Deploy docker-compose for Prometheus
