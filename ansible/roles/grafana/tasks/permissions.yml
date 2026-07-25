@@ -1,8 +1,14 @@
 ---
 
+- name: Check if grafana database exists
+  stat:
+    path: /opt/sdahub/data/grafana/grafana.db
+  register: grafana_db
+
 - name: Fix grafana database permissions
-  ansible.builtin.file:
-    path: "{{ data_dir }}/grafana/grafana.db"
-    owner: "472"
-    group: "472"
-    mode: "0640"
+  file:
+    path: /opt/sdahub/data/grafana/grafana.db
+    owner: 472
+    group: 472
+    mode: "0644"
+  when: grafana_db.stat.exists

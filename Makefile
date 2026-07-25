@@ -21,8 +21,8 @@ deploy:
 
 	ansible-playbook \
 	--vault-password-file .vault_pass \
-	-i ansible/inventory/production.yml \
-	ansible/playbooks/server.yml
+	-i ansible/inventory/bootstrap.yml \
+	ansible/playbooks/bootstrap-user.yml
 
 	@echo "=== Configure server ==="
 
