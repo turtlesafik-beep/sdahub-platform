@@ -20,30 +20,34 @@ deploy:
 	@echo "=== Bootstrap access ==="
 
 	ansible-playbook \
-	-i ansible/inventory/bootstrap.yml \
-	ansible/playbooks/bootstrap-user.yml
+	--vault-password-file .vault_pass \
+	-i ansible/inventory/production.yml \
+	ansible/playbooks/server.yml
 
 	@echo "=== Configure server ==="
 
 	ansible-playbook \
+	--vault-password-file .vault_pass \
+	-i ansible/inventory/production.yml \
+	ansible/playbooks/server.yml
+
+bootstrap:
+	ansible-playbook \
+	--vault-password-file .vault_pass \
 	-i ansible/inventory/production.yml \
 	ansible/playbooks/server.yml
 
 
-bootstrap:
-	ansible-playbook \
-	-i ansible/inventory/bootstrap.yml \
-	ansible/playbooks/bootstrap-user.yml
-
-
 configure:
 	ansible-playbook \
+	--vault-password-file .vault_pass \
 	-i ansible/inventory/production.yml \
 	ansible/playbooks/server.yml
 
 
 check:
 	ansible-playbook \
+	--vault-password-file .vault_pass \
 	-i ansible/inventory/production.yml \
 	--check \
 	ansible/playbooks/server.yml
@@ -54,5 +58,6 @@ reset-host:
 
 security-check:
 	ansible-playbook \
+	--vault-password-file .vault_pass \
 	-i ansible/inventory/production.yml \
 	ansible/playbooks/security-check.yml
