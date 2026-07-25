@@ -2,6 +2,7 @@ services:
   loki:
     image: grafana/loki:{{ loki_version }}
     container_name: loki
+    user: "{{ loki_uid }}:{{ loki_gid }}"
     restart: unless-stopped
     expose:
       - "3100"

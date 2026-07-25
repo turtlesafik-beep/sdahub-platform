@@ -1,4 +1,7 @@
 ---
+- import_tasks: permissions.yml
+
+
 - name: Deploy Grafana datasources config
   ansible.builtin.template:
     src: datasources.yml.j2
@@ -7,13 +10,15 @@
     group: "{{ deploy_user }}"
     mode: "0644"
 
+
 - name: Deploy docker-compose for Grafana
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ compose_dir }}/grafana/docker-compose.yml"
     owner: "{{ deploy_user }}"
     group: "{{ deploy_user }}"
-    mode: "0644"
+    mode: "0640"
+
 
 - name: Start Grafana
   community.docker.docker_compose_v2:

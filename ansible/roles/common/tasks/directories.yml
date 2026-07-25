@@ -42,3 +42,38 @@
     - "{{ sdahub_root }}/certbot"
     - "{{ sdahub_root }}/certbot/www"
     - "{{ sdahub_root }}/certbot/conf"
+
+    - name: Fix Grafana data permissions
+  ansible.builtin.file:
+    path: "{{ data_dir }}/grafana"
+    owner: "472"
+    group: "472"
+    mode: "0750"
+    recurse: true
+
+
+- name: Fix Loki data permissions
+  ansible.builtin.file:
+    path: "{{ data_dir }}/loki"
+    owner: "10001"
+    group: "10001"
+    mode: "0750"
+    recurse: true
+
+
+- name: Fix Prometheus data permissions
+  ansible.builtin.file:
+    path: "{{ data_dir }}/prometheus"
+    owner: "65534"
+    group: "65534"
+    mode: "0750"
+    recurse: true
+
+
+- name: Fix Portainer data permissions
+  ansible.builtin.file:
+    path: "{{ data_dir }}/portainer"
+    owner: "0"
+    group: "0"
+    mode: "0750"
+    recurse: true

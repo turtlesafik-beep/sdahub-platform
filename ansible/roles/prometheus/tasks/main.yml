@@ -1,11 +1,20 @@
 ---
+- name: Prepare Prometheus data directory permissions
+  ansible.builtin.file:
+    path: "{{ data_dir }}/prometheus"
+    state: directory
+    owner: "{{ prometheus_uid }}"
+    group: "{{ prometheus_gid }}"
+    mode: "0755"
+    recurse: true
+
 - name: Deploy Prometheus config
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: "{{ config_dir }}/prometheus/prometheus.yml"
     owner: "{{ deploy_user }}"
     group: "{{ deploy_user }}"
-    mode: "0644"
+    mode: "0640"
 
 - name: Deploy docker-compose for Prometheus
   ansible.builtin.template:

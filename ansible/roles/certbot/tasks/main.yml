@@ -5,3 +5,12 @@
       - certbot
       - python3-certbot-nginx
     state: present
+
+- name: Generate Grafana certificate
+  command:
+    certbot --nginx
+    -d {{ grafana_subdomain }}
+    -d {{ portainer_subdomain }}
+    --email {{ certbot_email }}
+    --agree-tos
+    --non-interactive

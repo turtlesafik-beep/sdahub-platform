@@ -48,3 +48,16 @@ letsencrypt_email: sdfsdfsdf.1956@mail.ru
 certbot_webroot: "{{ sdahub_root }}/certbot/www"
 
 letsencrypt_dir: "{{ sdahub_root }}/certbot/conf"
+
+# --- Container users ---
+grafana_uid: 472
+grafana_gid: 472
+
+prometheus_uid: 65534
+prometheus_gid: 65534
+
+loki_uid: 10001
+loki_gid: 10001
+
+portainer_uid: 0
+portainer_gid: 0

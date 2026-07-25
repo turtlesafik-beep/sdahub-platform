@@ -13,7 +13,7 @@
     dest: "{{ compose_dir }}/promtail/docker-compose.yml"
     owner: "{{ deploy_user }}"
     group: "{{ deploy_user }}"
-    mode: "0644"
+    mode: "0640"
 
 - name: Start Promtail
   community.docker.docker_compose_v2:

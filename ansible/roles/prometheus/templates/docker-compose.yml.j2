@@ -2,6 +2,7 @@ services:
   prometheus:
     image: prom/prometheus:{{ prometheus_version }}
     container_name: prometheus
+    user: "{{ prometheus_uid }}:{{ prometheus_gid }}"
     restart: unless-stopped
     expose:
       - "9090"

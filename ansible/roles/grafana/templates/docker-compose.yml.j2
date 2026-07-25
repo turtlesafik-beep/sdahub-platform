@@ -2,6 +2,7 @@ services:
   grafana:
     image: grafana/grafana:{{ grafana_version }}
     container_name: grafana
+    user: "{{ grafana_uid }}:{{ grafana_gid }}"
     restart: unless-stopped
 
     ports:
