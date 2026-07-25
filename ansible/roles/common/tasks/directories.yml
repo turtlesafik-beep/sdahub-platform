@@ -1,4 +1,5 @@
-- name: Create sdahub directories
+---
+- name: Create SDAHub directories
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -6,9 +7,33 @@
     group: "{{ deploy_user }}"
     mode: "0755"
   loop:
-  - "{{ sdahub_root }}"
-  - "{{ sdahub_root }}/compose"
-  - "{{ sdahub_root }}/configs"
-  - "{{ sdahub_root }}/data"
-  - "{{ sdahub_root }}/backups"
-  - "{{ sdahub_root }}/scripts"
+    # Root
+    - "{{ sdahub_root }}"
+
+    # Infrastructure
+    - "{{ compose_dir }}"
+    - "{{ config_dir }}"
+    - "{{ data_dir }}"
+    - "{{ backup_dir }}"
+    - "{{ scripts_dir }}"
+
+    # Compose projects
+    - "{{ compose_dir }}/grafana"
+    - "{{ compose_dir }}/prometheus"
+    - "{{ compose_dir }}/loki"
+    - "{{ compose_dir }}/promtail"
+    - "{{ compose_dir }}/node_exporter"
+    - "{{ compose_dir }}/portainer"
+
+    # Configs
+    - "{{ config_dir }}/grafana"
+    - "{{ config_dir }}/prometheus"
+    - "{{ config_dir }}/loki"
+    - "{{ config_dir }}/promtail"
+    - "{{ config_dir }}/nginx"
+
+    # Persistent data
+    - "{{ data_dir }}/grafana"
+    - "{{ data_dir }}/prometheus"
+    - "{{ data_dir }}/loki"
+    - "{{ data_dir }}/portainer"

@@ -1,27 +1,4 @@
 ---
-- name: Create directory for Grafana config
-  ansible.builtin.file:
-    path: "{{ config_dir }}/grafana"
-    state: directory
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_user }}"
-    mode: "0755"
-
-- name: Create directory for Grafana data
-  ansible.builtin.file:
-    path: "{{ data_dir }}/grafana"
-    state: directory
-    owner: "472"
-    group: "472"
-    mode: "0755"
-
-- name: Create monitoring network (if not exists)
-  community.docker.docker_network:
-    name: monitoring
-    driver: bridge
-    state: present
-  become: yes
-
 - name: Deploy Grafana datasources config
   ansible.builtin.template:
     src: datasources.yml.j2

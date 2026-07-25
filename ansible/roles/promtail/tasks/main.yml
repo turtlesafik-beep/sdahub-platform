@@ -1,19 +1,4 @@
 ---
-- name: Create directory for Promtail compose
-  ansible.builtin.file:
-    path: "{{ compose_dir }}/promtail"
-    state: directory
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_user }}"
-    mode: "0755"
-
-- name: Ensure monitoring network exists
-  community.docker.docker_network:
-    name: monitoring
-    driver: bridge
-    state: present
-  become: yes
-
 - name: Deploy Promtail configuration
   ansible.builtin.template:
     src: promtail-config.yml.j2

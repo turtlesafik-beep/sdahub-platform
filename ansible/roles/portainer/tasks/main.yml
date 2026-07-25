@@ -4,14 +4,6 @@
     cmd: docker --version
   changed_when: false
 
-- name: Create Portainer directory
-  ansible.builtin.file:
-    path: "{{ compose_dir }}/portainer"
-    state: directory
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_user }}"
-    mode: "0755"
-
 - name: Copy Portainer compose file
   ansible.builtin.template:
     src: docker-compose.yml.j2
