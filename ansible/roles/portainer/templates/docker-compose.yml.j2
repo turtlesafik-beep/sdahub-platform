@@ -4,6 +4,9 @@ services:
     container_name: portainer
     restart: unless-stopped
 
+    command:
+      - --admin-password={{ portainer_admin_password_hash | replace('$', '$$') }}
+
     ports:
       - "127.0.0.1:9443:9443"
 

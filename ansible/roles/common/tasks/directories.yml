@@ -43,7 +43,7 @@
     - "{{ sdahub_root }}/certbot/www"
     - "{{ sdahub_root }}/certbot/conf"
 
-    - name: Fix Grafana data permissions
+- name: Fix Grafana data permissions
   ansible.builtin.file:
     path: "{{ data_dir }}/grafana"
     owner: "472"
