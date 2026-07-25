@@ -7,5 +7,10 @@
   - common
   - security
   - docker
-  - nginx
+  - node_exporter
+  - prometheus
   - portainer
+  - grafana
+  - loki
+  - promtail
+  - nginx   

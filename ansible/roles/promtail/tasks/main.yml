@@ -1,0 +1,40 @@
+---
+- name: Create directory for Promtail compose
+  ansible.builtin.file:
+    path: "{{ compose_dir }}/promtail"
+    state: directory
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0755"
+
+- name: Ensure monitoring network exists
+  community.docker.docker_network:
+    name: monitoring
+    driver: bridge
+    state: present
+  become: yes
+
+- name: Deploy Promtail configuration
+  ansible.builtin.template:
+    src: promtail-config.yml.j2
+    dest: "{{ config_dir }}/promtail/promtail-config.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Deploy docker-compose for Promtail
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_dir }}/promtail/docker-compose.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Reset ssh connection
+  ansible.builtin.meta:
+    reset_connection
+
+- name: Start Promtail
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir }}/promtail"
+    state: present

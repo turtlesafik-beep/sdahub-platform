@@ -1,0 +1,48 @@
+---
+- name: Create directory for Prometheus config
+  ansible.builtin.file:
+    path: "{{ config_dir }}/prometheus"
+    state: directory
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0755"
+
+- name: Create directory for Prometheus data
+  ansible.builtin.file:
+    path: "{{ data_dir }}/prometheus"
+    state: directory
+    owner: "1000"   # UID внутри контейнера
+    group: "1000"
+    mode: "0755"
+
+- name: Create monitoring network (if not exists)
+  community.docker.docker_network:
+    name: monitoring
+    driver: bridge
+    state: present
+  become: yes
+
+- name: Deploy Prometheus config
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ config_dir }}/prometheus/prometheus.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Deploy docker-compose for Prometheus
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_dir }}/prometheus/docker-compose.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Reset ssh connection
+  ansible.builtin.meta:
+    reset_connection
+
+- name: Start Prometheus
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir }}/prometheus"
+    state: present

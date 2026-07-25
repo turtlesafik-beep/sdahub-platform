@@ -1,2 +1,19 @@
-*.retry
+# Ansible vault password file 
+.vault_pass
+vault_pass
+
+# Docker .env файлы
+.env
+*.env
+
+# Python
+*.pyc
 __pycache__/
+
+# Ansible retry files
+*.retry
+
+# IDE
+.idea/
+.vscode/
+*.swp

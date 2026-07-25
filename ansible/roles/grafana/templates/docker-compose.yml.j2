@@ -1,0 +1,18 @@
+services:
+  grafana:
+    image: grafana/grafana:{{ grafana_version }}
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "{{ grafana_port }}:3000"
+    volumes:
+      - {{ data_dir }}/grafana:/var/lib/grafana
+      - {{ config_dir }}/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    environment:
+      - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
+      - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
+
+networks:
+  default:
+    external:
+      name: monitoring

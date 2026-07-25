@@ -1,0 +1,17 @@
+services:
+  promtail:
+    image: grafana/promtail:{{ promtail_version }}
+    container_name: promtail
+    restart: unless-stopped
+    volumes:
+      - {{ config_dir }}/promtail/promtail-config.yml:/etc/promtail/config.yml
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /run/systemd/journal:/run/systemd/journal:ro
+      - /etc/hostname:/etc/hostname:ro
+    command: -config.file=/etc/promtail/config.yml
+
+networks:
+  default:
+    external:
+      name: monitoring

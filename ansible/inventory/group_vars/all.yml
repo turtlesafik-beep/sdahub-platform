@@ -10,5 +10,39 @@ data_dir: "{{ sdahub_root }}/data"
 backup_dir: "{{ sdahub_root }}/backups"
 scripts_dir: "{{ sdahub_root }}/scripts"
 
+# --- Monitoring ---
+# Prometheus
+prometheus_version: "latest"
+prometheus_port: 9090
+
+# Node Exporter
+node_exporter_version: "latest"
+node_exporter_port: 9100
+
+# Grafana
+grafana_enabled: true
+grafana_version: "latest"
+grafana_port: 3000
+grafana_admin_user: "admin"
+grafana_admin_password: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') | default('admin') }}"
+
+# Домены
+domain: sdahub.ru
+grafana_subdomain: grafana.{{ domain }}
+portainer_subdomain: portainer.{{ domain }}
+
+# Portainer 
+portainer_http_port: 9000
+portainer_https_port: 9443   
+portainer_use_http: true     
 portainer_port: 9443
 portainer_version: "2.27.9"
+
+# Loki
+loki_version: "latest"
+loki_port: 3100
+loki_data_dir: "{{ data_dir }}/loki"
+
+# Promtail
+promtail_version: "latest"
+promtail_port: 9080                           

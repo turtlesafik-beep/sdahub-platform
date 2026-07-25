@@ -1,0 +1,48 @@
+---
+- name: Create directory for Loki data
+  ansible.builtin.file:
+    path: "{{ loki_data_dir }}"
+    state: directory
+    owner: "10001"   # UID пользователя внутри контейнера loki (обычно 10001 или 0)
+    group: "10001"
+    mode: "0755"
+
+- name: Create directory for Loki compose
+  ansible.builtin.file:
+    path: "{{ compose_dir }}/loki"
+    state: directory
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0755"
+
+- name: Ensure monitoring network exists
+  community.docker.docker_network:
+    name: monitoring
+    driver: bridge
+    state: present
+  become: yes
+
+- name: Deploy Loki configuration
+  ansible.builtin.template:
+    src: loki-config.yml.j2
+    dest: "{{ config_dir }}/loki/loki-config.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Deploy docker-compose for Loki
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_dir }}/loki/docker-compose.yml"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+    mode: "0644"
+
+- name: Reset ssh connection
+  ansible.builtin.meta:
+    reset_connection
+
+- name: Start Loki
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir }}/loki"
+    state: present
