@@ -39,4 +39,12 @@ loki_version: "3.5.0"
 loki_data_dir: "{{ data_dir }}/loki"
 
 # Promtail
-promtail_version: "3.5.0"                 
+promtail_version: "3.5.0"
+
+# Certbot
+certbot_email: sdfsdfsdf.1956@mail.ru
+letsencrypt_email: sdfsdfsdf.1956@mail.ru
+
+certbot_webroot: "{{ sdahub_root }}/certbot/www"
+
+letsencrypt_dir: "{{ sdahub_root }}/certbot/conf"

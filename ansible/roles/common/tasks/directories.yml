@@ -37,3 +37,8 @@
     - "{{ data_dir }}/prometheus"
     - "{{ data_dir }}/loki"
     - "{{ data_dir }}/portainer"
+
+    # Certbot
+    - "{{ sdahub_root }}/certbot"
+    - "{{ sdahub_root }}/certbot/www"
+    - "{{ sdahub_root }}/certbot/conf"

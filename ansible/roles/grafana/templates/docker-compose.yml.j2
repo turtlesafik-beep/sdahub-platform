@@ -3,16 +3,22 @@ services:
     image: grafana/grafana:{{ grafana_version }}
     container_name: grafana
     restart: unless-stopped
+
     expose:
       - "3000"
-    volumes:
-      - {{ data_dir }}/grafana:/var/lib/grafana
-      - {{ config_dir }}/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+
     environment:
       - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
       - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
+      - GF_SERVER_ROOT_URL=https://{{ grafana_subdomain }}
+      - GF_SERVER_DOMAIN={{ grafana_subdomain }}
+      - GF_SERVER_SERVE_FROM_SUB_PATH=false
+
+    volumes:
+      - {{ data_dir }}/grafana:/var/lib/grafana
+      - {{ config_dir }}/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
 
 networks:
   default:
-    name: monitoring
     external: true
+    name: monitoring
