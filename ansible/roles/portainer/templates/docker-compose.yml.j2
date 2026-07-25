@@ -5,8 +5,8 @@ services:
 
     restart: unless-stopped
 
-    ports:
-      - "{{ portainer_port }}:9443"
+    expose:
+      - "3100"
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

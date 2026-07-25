@@ -3,8 +3,8 @@ services:
     image: grafana/loki:{{ loki_version }}
     container_name: loki
     restart: unless-stopped
-    ports:
-      - "{{ loki_port }}:3100"
+    expose:
+      - "3100"
     volumes:
       - {{ config_dir }}/loki/loki-config.yml:/etc/loki/loki-config.yml
       - {{ loki_data_dir }}:/loki
@@ -12,5 +12,5 @@ services:
 
 networks:
   default:
-    external:
-      name: monitoring
+    name: monitoring
+    external: true

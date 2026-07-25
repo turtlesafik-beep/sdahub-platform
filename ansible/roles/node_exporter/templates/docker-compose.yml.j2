@@ -3,8 +3,8 @@ services:
     image: prom/node-exporter:{{ node_exporter_version }}
     container_name: node_exporter
     restart: unless-stopped
-    ports:
-      - "{{ node_exporter_port }}:9100"
+    expose:
+      - "3100"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -16,5 +16,5 @@ services:
 
 networks:
   default:
-    external:
-      name: monitoring
+    name: monitoring
+    external: true

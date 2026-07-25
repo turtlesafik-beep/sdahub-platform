@@ -7,10 +7,6 @@
     group: "{{ deploy_user }}"
     mode: "0644"
 
-- name: Reset ssh connection
-  ansible.builtin.meta:
-    reset_connection
-
 - name: Start node_exporter
   community.docker.docker_compose_v2:
     project_src: "{{ compose_dir }}/node_exporter"
