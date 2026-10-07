@@ -1,0 +1,14 @@
+---
+
+- name: Configure server base + security
+  hosts: all
+  become: true
+
+  vars_files:
+    - ../inventory/group_vars/vault.yml
+
+  roles:
+    - common          
+    - security        
+    - docker          
+    - security_check  
